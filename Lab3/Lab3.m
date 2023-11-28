@@ -1,0 +1,99 @@
+%Lab 3
+
+% Log transformation code
+% A = log(1 + abs(F));
+% A = A/max(A(:));
+
+% cTP
+cTP = im2double(imread("characterTestPattern.tif"));
+
+%% Problem 1
+
+F = fftshift(fft2(cTP));
+Spec1 = log(1 + abs(F));
+Spec1 = Spec1/max(Spec1(:));
+imshow(Spec1)
+imwrite(Spec1, "Spec1.tif")
+
+cTP_shift = circshift(cTP,[100,-200]);
+figure
+imshow(cTP_shift); title("cTP_shift")
+
+%% Problem 2
+
+F = fftshift(fft2(cTP_shift));
+Spec2 = log(1 + abs(F));
+Spec2 = Spec2/max(Spec2(:));
+imshow(Spec2); title("spec2")
+imwrite(Spec2, "Spec2.tif")
+
+%% Problem 3
+
+cTP_rot = imrotate(cTP,15,'bicubic');
+imshow(cTP_rot);
+
+%% Problem 4
+
+F = fftshift(fft2(cTP_rot));
+Spec3 = log(1 + abs(F));
+Spec3 = Spec3/max(Spec3(:));
+imshow(Spec3);
+imwrite(Spec3, "Spec3.tif")
+
+%% Problem 6
+
+cTP2 = im2double(imread("characterTestPattern_2.tif"));
+
+F = fftshift(fft2(cTP2));
+Spec4 = log(1 + abs(F));
+Spec4 = Spec4/max(Spec4(:));
+imshow(Spec4); title("Spec4"); figure; imshow(Spec1)
+imwrite(Spec4, "Spec4.tif")
+
+%% Problem 9
+
+cTP3 = im2double(imread("characterTestPattern_3.tif"));
+F = fftshift(fft2(cTP3));
+Spec5 = log(1 + abs(F));
+Spec5 = Spec5/max(Spec5(:));
+imshow(Spec5); title("Spec5"); figure; imshow(Spec1)
+imwrite(Spec5, "Spec5.tif")
+
+%% Problem 11
+
+v2 = imread("verticalbars_2.tif");
+
+F = fftshift(fft2(v2));
+Spec6 = log(1 + abs(F));
+Spec6 = Spec6/max(Spec6(:));
+imshow(Spec6); title("Spec6");
+
+v4 = imread("verticalbars_4.tif");
+imshow(v4)
+
+%% Problem 14
+
+E1 = fftshift(fft2(im2double(imread("Einstein1.jpg"))));
+E2 = fftshift(fft2(im2double(imread("Einstein2.jpg"))));
+SpecE1 = abs(E1); 
+AngE2 = angle(E2);
+E1_E2 = real(ifft2(SpecE1.*exp(i*AngE2)));
+imwrite(E1_E2, "E1_E2.tif");
+
+SpecE2 = abs(E2);
+AngE1 = angle(E1);
+E2_E1 = real(ifft2(SpecE2.*exp(i*AngE1)));
+imwrite(E2_E1, "E2_E1.tif");
+
+%% FilterFreq
+test = im2double(imread("characterTestPattern.tif"));
+
+[olp, ohp] = FilterFreq(test,10);
+
+imshow(ohp)
+
+%% RemoveSinusoidalNoise
+
+test = im2double(imread("car-moire-pattern.tif"));
+
+RemoveSinusoidalNoise(test,10);
